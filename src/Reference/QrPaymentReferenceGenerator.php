@@ -68,7 +68,7 @@ final class QrPaymentReferenceGenerator implements SelfValidatableInterface
                 'match' => true
             ]),
             new Assert\Length([
-                'max' => 11
+                'max' => 14
             ]),
         ]);
 
