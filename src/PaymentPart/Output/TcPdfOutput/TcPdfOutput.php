@@ -93,19 +93,16 @@ final class TcPdfOutput extends AbstractOutput implements OutputInterface
 
         switch ($this->getQrCodeImageFormat()) {
             case QrCode::FILE_FORMAT_SVG:
-                $format = QrCode::FILE_FORMAT_SVG;
                 $method = "ImageSVG";
                 break;
             case QrCode::FILE_FORMAT_PNG:
             default:
-                $format = QrCode::FILE_FORMAT_PNG;
                 $method = "Image";
         }
 
         $yPosQrCode = 209.5 + $this->offsetY;
         $xPosQrCode = self::RIGHT_PART_X + 1 + $this->offsetX;
 
-        $qrCode->setWriterByExtension($format);
         $img = base64_decode(preg_replace('#^data:image/[^;]+;base64,#', '', $qrCode->writeDataUri()));
         $this->tcPdf->$method("@".$img, $xPosQrCode, $yPosQrCode, 46, 46);
     }
@@ -117,21 +114,21 @@ final class TcPdfOutput extends AbstractOutput implements OutputInterface
 
         // Title
         $this->tcPdf->SetFont(self::FONT, 'B', self::FONT_SIZE_MAIN_TITLE);
-        $this->SetY(self::TITLE_Y);
-        $this->SetX($x);
+        $this->setY(self::TITLE_Y);
+        $this->setX($x);
         $this->printCell(Translation::get('receipt', $this->language), 0, 7);
 
         // Elements
-        $this->SetY(204);
+        $this->setY(204);
         foreach ($this->getInformationElementsOfReceipt() as $informationElement) {
-            $this->SetX($x);
+            $this->setX($x);
             $this->setContentElement($informationElement, true);
         }
 
         // Acceptance section
         $this->tcPdf->SetFont(self::FONT, 'B', 6);
-        $this->SetY(273);
-        $this->SetX($x);
+        $this->setY(273);
+        $this->setX($x);
         $this->printCell(Translation::get('acceptancePoint', $this->language), 54, 0, self::ALIGN_BELOW, self::ALIGN_RIGHT);
     }
 
@@ -142,14 +139,14 @@ final class TcPdfOutput extends AbstractOutput implements OutputInterface
 
         // Title
         $this->tcPdf->SetFont(self::FONT, 'B', self::FONT_SIZE_MAIN_TITLE);
-        $this->SetY(self::TITLE_Y);
-        $this->SetX(self::RIGHT_PART_X);
+        $this->setY(self::TITLE_Y);
+        $this->setX(self::RIGHT_PART_X);
         $this->printCell(Translation::get('paymentPart', $this->language), 48, 7);
 
         // Elements
-        $this->SetY(197);
+        $this->setY(197);
         foreach ($this->getInformationElements() as $informationElement) {
-            $this->SetX($x);
+            $this->setX($x);
             $this->setContentElement($informationElement, false);
         }
     }
@@ -158,10 +155,10 @@ final class TcPdfOutput extends AbstractOutput implements OutputInterface
     {
         $x = self::LEFT_PART_X;
         $this->tcPdf->setCellHeightRatio(self::LEFT_CELL_HEIGHT_RATIO_CURRENCY_AMOUNT);
-        $this->SetY(self::CURRENCY_AMOUNT_Y);
+        $this->setY(self::CURRENCY_AMOUNT_Y);
 
         foreach ($this->getCurrencyElements() as $currencyElement) {
-            $this->SetX($x);
+            $this->setX($x);
             $this->setContentElement($currencyElement, true);
         }
     }
@@ -170,10 +167,10 @@ final class TcPdfOutput extends AbstractOutput implements OutputInterface
     {
         $x = 16;
         $this->tcPdf->setCellHeightRatio(self::LEFT_CELL_HEIGHT_RATIO_CURRENCY_AMOUNT);
-        $this->SetY(self::CURRENCY_AMOUNT_Y);
+        $this->setY(self::CURRENCY_AMOUNT_Y);
 
         foreach ($this->getAmountElementsReceipt() as $amountElement) {
-            $this->SetX($x);
+            $this->setX($x);
             $this->setContentElement($amountElement, true);
         }
     }
@@ -182,10 +179,10 @@ final class TcPdfOutput extends AbstractOutput implements OutputInterface
     {
         $x = self::RIGHT_PART_X;
         $this->tcPdf->setCellHeightRatio(self::RIGHT_CELL_HEIGHT_RATIO_CURRENCY_AMOUNT);
-        $this->SetY(self::CURRENCY_AMOUNT_Y);
+        $this->setY(self::CURRENCY_AMOUNT_Y);
 
         foreach ($this->getCurrencyElements() as $currencyElement) {
-            $this->SetX($x);
+            $this->setX($x);
             $this->setContentElement($currencyElement, false);
         }
     }
@@ -194,10 +191,10 @@ final class TcPdfOutput extends AbstractOutput implements OutputInterface
     {
         $x = 80;
         $this->tcPdf->setCellHeightRatio(self::RIGHT_CELL_HEIGHT_RATIO_CURRENCY_AMOUNT);
-        $this->SetY(self::CURRENCY_AMOUNT_Y);
+        $this->setY(self::CURRENCY_AMOUNT_Y);
 
         foreach ($this->getAmountElements() as $amountElement) {
-            $this->SetX($x);
+            $this->setX($x);
             $this->setContentElement($amountElement, false);
         }
     }
@@ -206,11 +203,11 @@ final class TcPdfOutput extends AbstractOutput implements OutputInterface
     {
         $x = self::RIGHT_PART_X;
         $this->tcPdf->setCellHeightRatio(self::RIGHT_CELL_HEIGHT_RATIO_COMMON);
-        $this->SetY(286);
+        $this->setY(286);
         $this->tcPdf->SetFont(self::FONT, '', self::FONT_SIZE_FURTHER_INFORMATION);
 
         foreach ($this->getFurtherInformationElements() as $furtherInformationElement) {
-            $this->SetX($x);
+            $this->setX($x);
             $this->setContentElement($furtherInformationElement, true);
         }
     }
@@ -222,8 +219,8 @@ final class TcPdfOutput extends AbstractOutput implements OutputInterface
             $this->printLine(2, 193, 208, 193);
             $this->printLine(62, 193, 62, 296);
             $this->tcPdf->SetFont(self::FONT, '', self::FONT_SIZE_FURTHER_INFORMATION);
-            $this->SetY(188);
-            $this->SetX(5);
+            $this->setY(188);
+            $this->setX(5);
             $this->printCell(Translation::get('separate', $this->language), 200, 0, 0, self::ALIGN_CENTER);
         }
     }
